@@ -8,6 +8,7 @@ public class ViewPlane {
 	private float gamma; //monitor gamma factor
 	private float invGamma; // one over gamma
 	public boolean showOutOfGamut; // display RED if RGBColor out of gamut
+	public int numSamples;
 	
 	public float getGamma() {
 		return gamma;
@@ -29,6 +30,7 @@ public class ViewPlane {
 		gamma = 1;
 		invGamma = 1;
 		showOutOfGamut = false;
+		numSamples = 1;
 	}
 	
 	public ViewPlane(ViewPlane vp) {
@@ -38,6 +40,7 @@ public class ViewPlane {
 		gamma = vp.gamma;
 		invGamma = vp.invGamma;
 		showOutOfGamut = vp.showOutOfGamut;
+		numSamples = vp.numSamples;
 	}
 	
 	public void set(ViewPlane vp) {
@@ -47,6 +50,7 @@ public class ViewPlane {
 		gamma = vp.gamma;
 		invGamma = vp.invGamma;
 		showOutOfGamut = vp.showOutOfGamut;
+		numSamples = vp.numSamples;
 	}
 	
 	

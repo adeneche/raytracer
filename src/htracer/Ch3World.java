@@ -1,5 +1,7 @@
 package htracer;
 
+import java.io.IOException;
+
 import htracer.geometric.Sphere;
 import htracer.tracers.MultipleObjects;
 import htracer.utility.Point3;
@@ -8,12 +10,15 @@ import htracer.world.World;
 import static htracer.utility.Constants.*;
 
 public class Ch3World extends World {
+	static final String fileName = "chap4.6.png";
 
 	@Override
 	public void build() {
+		
 		vp.hres = 400;
 		vp.vres = 400;
 		vp.s = 0.5f;
+		vp.numSamples = 16;
 		
 		backgroundColor.set(black);
 		
@@ -73,6 +78,12 @@ public class Ch3World extends World {
 		World world = new Ch3World();
 		world.build();
 		world.renderScene();
+		
+		try {
+			world.saveImage(fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		System.exit(0);
 	}

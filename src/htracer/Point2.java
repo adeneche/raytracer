@@ -5,6 +5,9 @@ public class Point2 {
 	public float x;
 	public float y;
 	
+	public Point2() {
+		x = y = 0;
+	}
 	public Point2(float a) {
 		x = y = a;
 	}
