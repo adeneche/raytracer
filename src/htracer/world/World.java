@@ -6,7 +6,6 @@ import htracer.tracers.Tracer;
 import htracer.utility.Constants;
 import htracer.utility.Image;
 import htracer.utility.RGBColor;
-import htracer.utility.RNG;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
@@ -63,10 +62,8 @@ public abstract class World {
 		RGBColor pixelColor = new RGBColor();
 		Ray ray = new Ray();
 		float zw = 100;
-		int n = (int)Math.sqrt(vp.numSamples);
 		Point2 pp = new Point2();
-		
-		RNG rng = RNG.instance();
+		Point2 sp;
 		
 		openWindow(vp.hres, vp.vres);
 		ray.d.set(0,0,-1);
@@ -78,14 +75,14 @@ public abstract class World {
 			for (int c = 0; c < vp.hres; c++) { // across
 				pixelColor.set(black);
 				
-				for (int p = 0; p < n; p++) { // up pixel
-					for (int q = 0; q < n; q++) { // across pixel
-						pp.x = vp.s * (c - .5f * vp.hres + (q + rng.nextFloat()) / n);
-						pp.y = vp.s * (r - .5f * vp.vres + (p + rng.nextFloat()) / n);
-						ray.o.set(pp.x, pp.y, zw);
-						pixelColor.sadd(tracer.traceRay(ray));
-						current++;
-					}
+				for (int j = 0; j < vp.numSamples; j++) {
+					sp = vp.sampler.sampleUnitSquare();
+					pp.x = vp.s * (c - .5f * vp.hres + sp.x);
+					pp.y = vp.s * (r - .5f * vp.vres + sp.y);
+					ray.o.set(pp.x, pp.y, zw);
+					pixelColor.sadd(tracer.traceRay(ray));
+
+					current++;
 				}
 				
 				pixelColor.sdiv(vp.numSamples); // average the colors

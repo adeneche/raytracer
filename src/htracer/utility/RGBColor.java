@@ -31,12 +31,14 @@ public class RGBColor {
 		b = rgb.b;
 	}
 	
-	public RGBColor set(float r, float g, float b) {
+	public void set(float v) {
+		set(v, v, v);
+	}
+	
+	public void set(float r, float g, float b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
-		
-		return this;
 	}
 	
 	public RGBColor add(RGBColor rgb) {

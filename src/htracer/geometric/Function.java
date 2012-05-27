@@ -11,8 +11,9 @@ public class Function extends GeometricObject {
 		
 		float x = ray.o.x + sr.w.vp.hres * .5f * sr.w.vp.s;
 		float y = ray.o.y + sr.w.vp.vres * .5f * sr.w.vp.s;
+		
 		float v = (float) (.5 * (1 + Math.sin(x*x*y*y)));
-		color.set(v, v, v);
+		color.set(v);
 		return true;
 	}
 
