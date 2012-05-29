@@ -72,6 +72,13 @@ public class Vector3 {
 		return (float)Math.sqrt(lenSq());
 	}
 	
+	public void normalize() {
+		float len = len();
+		x /= len;
+		y /= len;
+		z /= len;
+	}
+	
 	public float dot(Vector3 v) {
 		return dot(this, v);
 	}

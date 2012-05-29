@@ -26,12 +26,16 @@ public class Point3 {
 		set(b);
 	}
 	
-	public Point3 set(Point3 v) {
+	public void set(Point3 v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
-		
-		return this;
+	}
+	
+	public void set(Vector3 v) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
 	}
 	
 	public Point3 set(float x, float y, float z) {
@@ -40,6 +44,10 @@ public class Point3 {
 		this.z = z;
 		
 		return this;
+	}
+	
+	public Vector3 asVector() {
+		return new Vector3(x, y, z);
 	}
 	
 	public Point3 neg() {

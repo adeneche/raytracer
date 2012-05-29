@@ -2,6 +2,7 @@ package htracer;
 
 import java.io.IOException;
 
+import htracer.cameras.Pinhole;
 import htracer.geometric.Sphere;
 import htracer.tracers.MultipleObjects;
 import htracer.utility.Point3;
@@ -10,7 +11,6 @@ import htracer.world.World;
 import static htracer.utility.Constants.*;
 
 public class Ch3World extends World {
-	static final String fileName = "chap4.6.png";
 
 	@Override
 	public void build() {
@@ -18,11 +18,13 @@ public class Ch3World extends World {
 		vp.hres = 400;
 		vp.vres = 400;
 		vp.s = 0.5f;
-		vp.numSamples = 16;
+		vp.setSamples(25);
 		
 		backgroundColor.set(black);
 		
 		tracer = new MultipleObjects(this);  
+		
+		camera = new Pinhole();
 		
 		// colours
 
@@ -80,7 +82,7 @@ public class Ch3World extends World {
 		world.renderScene();
 		
 		try {
-			world.saveImage(fileName);
+			world.saveImage("chapter9.1.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

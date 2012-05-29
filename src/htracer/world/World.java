@@ -1,6 +1,6 @@
 package htracer.world;
 
-import htracer.Point2;
+import htracer.cameras.Camera;
 import htracer.geometric.GeometricObject;
 import htracer.tracers.Tracer;
 import htracer.utility.Constants;
@@ -14,13 +14,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Vector;
-import static htracer.utility.Constants.black;
 
 public abstract class World {
 
 	public ViewPlane vp;
 	public RGBColor backgroundColor;
 	public Tracer tracer;
+	public Camera camera;
 
 	public Collection<GeometricObject> objects;
 	
@@ -55,51 +55,14 @@ public abstract class World {
 	
 	public abstract void build();
 	
-	public void renderScene() {
-		System.out.print("Rendering: [");
-		long start = System.currentTimeMillis();
-		
-		RGBColor pixelColor = new RGBColor();
-		Ray ray = new Ray();
-		float zw = 100;
-		Point2 pp = new Point2();
-		Point2 sp;
-		
-		openWindow(vp.hres, vp.vres);
-		ray.d.set(0,0,-1);
-		
-		int total = vp.hres*vp.vres*vp.numSamples; // total number of ray shots
-		int current = 0; // current number of ray shots
-		
-		for (int r = 0; r < vp.vres; r++) { // up
-			for (int c = 0; c < vp.hres; c++) { // across
-				pixelColor.set(black);
-				
-				for (int j = 0; j < vp.numSamples; j++) {
-					sp = vp.sampler.sampleUnitSquare();
-					pp.x = vp.s * (c - .5f * vp.hres + sp.x);
-					pp.y = vp.s * (r - .5f * vp.vres + sp.y);
-					ray.o.set(pp.x, pp.y, zw);
-					pixelColor.sadd(tracer.traceRay(ray));
-
-					current++;
-				}
-				
-				pixelColor.sdiv(vp.numSamples); // average the colors
-				displayPixel(r, c, pixelColor);
-				
-				if (current > (total/10)) {
-					System.out.print(".");
-					current -= total/10;
-				}
-			}
-		}
-		
-		System.out.println("]. Done in " + (System.currentTimeMillis()-start)/1000 + "s");
-	}
-	
 	public void openWindow(int hres, int vres) {
 		image = new Image(hres, vres);
+	}
+	
+	public void renderScene() {
+		openWindow(vp.hres, vp.vres);
+		camera.computeUVW();
+		camera.renderScene(this);
 	}
 	
 	public void displayPixel(int row, int column, RGBColor color) {
