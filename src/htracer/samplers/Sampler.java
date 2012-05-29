@@ -1,6 +1,7 @@
 package htracer.samplers;
 
 import htracer.Point2;
+import htracer.utility.Point3;
 import htracer.utility.RNG;
 
 import java.util.Collections;
@@ -15,6 +16,8 @@ public abstract class Sampler {
 	protected int numSets; // num sample sets (patterns) stored
 	protected Point2[] samples; // sample points on a unit square
 	protected Point2[] diskSamples; // sample points on a unit disk
+	protected Point3[] hemisphereSamples; //sample points on a unit sphere
+	
 	protected int[] shuffledIndices; // shuffled samples array indices
 	protected long count; // current number of sample points used
 	protected int jump; // random index jump
@@ -131,6 +134,26 @@ public abstract class Sampler {
 		// samples.erase(samples.begin(), samples.end());
 	}
 
+	/**
+	 * Maps the 2D sample points to 3D points on a unit hemisphere with a cosine power
+	 * density distribution in the polar angle
+	 */
+	public void mapSamplesToHemisphere(float exp) {
+		int size = samples.length;
+		hemisphereSamples = new Point3[size];
+			
+		for (int j = 0; j < size; j++) {
+			float cos_phi = (float)Math.cos(2.0 * PI * samples[j].x);
+			float sin_phi = (float)Math.sin(2.0 * PI * samples[j].x);	
+			float cos_theta = (float)Math.pow((1.0 - samples[j].y), 1.0 / (exp + 1.0));
+			float sin_theta = (float)Math.sqrt (1.0 - cos_theta * cos_theta);
+			float pu = sin_theta * cos_phi;
+			float pv = sin_theta * sin_phi;
+			float pw = cos_theta;
+			hemisphereSamples[j] = new Point3(pu, pv, pw); 
+		}
+	}
+
 	/** get next sample on unit square */
 	public Point2 sampleUnitSquare() {
 		if (count % numSamples == 0) // start of a new pixel
@@ -146,4 +169,10 @@ public abstract class Sampler {
 		return diskSamples[jump + shuffledIndices[jump + (int)(count++ % numSamples)]];
 	}
 
+	public Point3 sampleHemisphere() {
+		if (count % numSamples == 0)  									// start of a new pixel
+			jump = rng.nextInt(numSets) * numSamples;
+		
+		return hemisphereSamples[jump + shuffledIndices[jump + (int)(count++ % numSamples)]];
+	}
 }
