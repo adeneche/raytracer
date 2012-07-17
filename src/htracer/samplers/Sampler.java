@@ -127,8 +127,7 @@ public abstract class Sampler {
 
 			phi *= PI / 4.0;
 
-			diskSamples[j].x = (float) (r * Math.cos(phi));
-			diskSamples[j].y = (float) (r * Math.sin(phi));
+			diskSamples[j] = new Point2((float) (r * Math.cos(phi)), (float) (r * Math.sin(phi)));
 		}
 
 		// samples.erase(samples.begin(), samples.end());

@@ -12,6 +12,7 @@ public class ViewPlane {
 	private float gamma; //monitor gamma factor
 	private float invGamma; // one over gamma
 	public boolean showOutOfGamut; // display RED if RGBColor out of gamut
+	public int maxDepth;
 	
 	public int numSamples;
 	public Sampler sampler;
@@ -36,7 +37,7 @@ public class ViewPlane {
 		gamma = 1;
 		invGamma = 1;
 		showOutOfGamut = false;
-		
+		maxDepth = -1; // no limit
 		numSamples = 1;
 	}
 	

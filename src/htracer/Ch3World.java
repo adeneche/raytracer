@@ -29,13 +29,13 @@ public class Ch3World extends World {
 		// colours
 
 		RGBColor yellow = new RGBColor(1, 1, 0);
-		RGBColor brown = new RGBColor(0.71f, 0.40f, 0.16f);								// brown
-		RGBColor dark_green = new RGBColor(0, 0.41f, 0.41f);							// dark_green
+		RGBColor brown = new RGBColor(0.71f, 0.40f, 0.16f);							// brown
+		RGBColor dark_green = new RGBColor(0, 0.41f, 0.41f);						// dark_green
 		RGBColor orange = new RGBColor(1, 0.75f, 0);								// orange
-		RGBColor green = new RGBColor(0, 0.6f, 0.3f);									// green
-		RGBColor light_green = new RGBColor(0.65f, 1, 0.30f);							// light green
-		RGBColor dark_yellow = new RGBColor(0.61f, 0.61f, 0);							// dark yellow
-		RGBColor light_purple = new RGBColor(0.65f, 0.3f, 1);							// light purple
+		RGBColor green = new RGBColor(0, 0.6f, 0.3f);								// green
+		RGBColor light_green = new RGBColor(0.65f, 1, 0.30f);						// light green
+		RGBColor dark_yellow = new RGBColor(0.61f, 0.61f, 0);						// dark yellow
+		RGBColor light_purple = new RGBColor(0.65f, 0.3f, 1);						// light purple
 		RGBColor dark_purple = new RGBColor(0.5f, 0, 1);							// dark purple
 		
 		// spheres

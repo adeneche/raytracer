@@ -24,8 +24,9 @@ public class MultipleObjects extends Tracer {
 
 	@Override
 	public RGBColor traceRay(Ray ray, int depth) {
-		// TODO Auto-generated method stub
-		return null;
+		if (world.vp.maxDepth != -1 && depth > world.vp.maxDepth)
+			return world.backgroundColor ;
+		return traceRay(ray);
 	}
 
 }

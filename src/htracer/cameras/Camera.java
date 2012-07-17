@@ -10,6 +10,7 @@ public abstract class Camera {
 	public Point3 lookat;
 	public Point3 up;
 	public float ra;
+	public float exposureTime;
 	
 	protected Vector3 u, v, w; // orthonormal basis vectors
 	
@@ -22,6 +23,8 @@ public abstract class Camera {
 		u = new Vector3(1, 0, 0);
 		v = new Vector3(0, 1, 0);
 		w = new Vector3(0, 0, 1);
+		
+		exposureTime = 1;
 	}
 	
 	public abstract void renderScene(World world);
