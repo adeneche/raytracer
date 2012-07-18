@@ -25,7 +25,10 @@ public class Ch10World extends World {
 		
 		backgroundColor.set(white);
 		
-		tracer = new MultipleObjects(this);  
+		MultipleObjects moTracer = new MultipleObjects(this);  
+		moTracer.ambiant = 0.5f;
+		
+		tracer = moTracer;
 		
 		ThinLens thinLens = new ThinLens();
 		thinLens.setSampler(new MultiJittered(numSamples));

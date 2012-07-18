@@ -3,7 +3,9 @@ package htracer;
 import java.io.IOException;
 
 import htracer.cameras.Pinhole;
+import htracer.cameras.ThinLens;
 import htracer.geometric.Sphere;
+import htracer.samplers.MultiJittered;
 import htracer.tracers.MultipleObjects;
 import htracer.utility.Point3;
 import htracer.utility.RGBColor;
@@ -22,9 +24,22 @@ public class Ch3World extends World {
 		
 		backgroundColor.set(black);
 		
-		tracer = new MultipleObjects(this);  
+		MultipleObjects motracer = new MultipleObjects(this);  
+		motracer.ambiant = .25f;
 		
-		camera = new Pinhole();
+		tracer = motracer;
+		
+		ThinLens thinLens = new ThinLens();
+		thinLens.setSampler(new MultiJittered(vp.numSamples));
+		thinLens.eye.set(0, 0, 100);
+		thinLens.lookat.set(0, 6, 0);
+		thinLens.d = 40;
+		thinLens.f = 98;
+		thinLens.lensRadius = 2;
+		thinLens.zoom = 4;
+		thinLens.computeUVW();
+		
+		camera = thinLens;
 		
 		// colours
 

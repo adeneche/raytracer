@@ -24,12 +24,15 @@ public class ShadeRec {
 	}
 	
 	public ShadeRec(ShadeRec sr) {
-		//TODO à implémenter
-		throw new RuntimeException("Not Yet Implemented!");
+		this(sr.w);
+		set(sr);
 	}
 	
 	public void set(ShadeRec sr) {
-		//TODO à implémenter
-		throw new RuntimeException("Not Yet Implemented!");
+		hitAnObject = sr.hitAnObject;
+		localHitPoint.set(sr.localHitPoint);
+		normal.set(sr.normal);
+		color.set(sr.color);
+		t = sr.t;
 	}
 }

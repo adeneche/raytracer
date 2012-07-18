@@ -38,19 +38,21 @@ public abstract class World {
 	
 	public ShadeRec hitBareBonesObjects(Ray ray) {
 		ShadeRec sr = new ShadeRec(this);
+		ShadeRec minSr = new ShadeRec(this);
 		
 		ray.tmin = Constants.kHugeValue;
 		// sr.t = Constants.kHugeValue;
 		
 		for (GeometricObject go : objects) {
 			if (go.hit(ray, sr) && (sr.t < ray.tmin)) {
-				sr.hitAnObject = true;
+				minSr.set(sr); 
+				minSr.hitAnObject = true;
+				minSr.color.set(go.color);
 				ray.tmin = sr.t;
-				sr.color.set(go.color);
 			}
 		}
 		
-		return sr;
+		return minSr;
 	}
 	
 	public abstract void build();
