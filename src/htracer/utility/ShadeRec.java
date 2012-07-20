@@ -18,7 +18,7 @@ public class ShadeRec {
 	public ShadeRec(World wr) {
 		hitAnObject = false;
 		localHitPoint= new Point3();
-		normal = new Normal();
+		normal = new Normal(0, 0, 1);
 		color = new RGBColor();
 		w = wr;
 	}

@@ -13,5 +13,14 @@ public class Constants {
 	public static final RGBColor black 	= new RGBColor();
 	public static final RGBColor white 	= new RGBColor(1,1,1);
 	public static final RGBColor red 	= new RGBColor(1,0,0);
+	public static final RGBColor yellow = new RGBColor(1, 1, 0);
+	public static final RGBColor brown = new RGBColor(0.71f, 0.40f, 0.16f);							
+	public static final RGBColor dark_green = new RGBColor(0, 0.41f, 0.41f);						
+	public static final RGBColor orange = new RGBColor(1, 0.75f, 0);								
+	public static final RGBColor green = new RGBColor(0, 0.6f, 0.3f);								
+	public static final RGBColor light_green = new RGBColor(0.65f, 1, 0.30f);						
+	public static final RGBColor dark_yellow = new RGBColor(0.61f, 0.61f, 0);						
+	public static final RGBColor light_purple = new RGBColor(0.65f, 0.3f, 1);						
+	public static final RGBColor dark_purple = new RGBColor(0.5f, 0, 1);							
 
 }

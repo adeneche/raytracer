@@ -61,8 +61,7 @@ public class Pinhole extends Camera {
 				}
 			}
 
-		System.out.println("]. Done in " + (System.currentTimeMillis() - start)
-				/ 1000 + "s");
+		System.out.println("]. Done in " + (System.currentTimeMillis() - start) / 1000 + "s");
 	}
 
 	public Vector3 getDirection(Point2 p) {

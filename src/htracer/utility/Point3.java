@@ -45,7 +45,7 @@ public class Point3 {
 		
 		return this;
 	}
-	
+
 	public Vector3 asVector() {
 		return new Vector3(x, y, z);
 	}
@@ -57,8 +57,12 @@ public class Point3 {
 	public Vector3 sub(Point3 b) {
 		return new Vector3(x - b.x, y - b.y, z - b.z);
 	}
-	
+
 	public Point3 add(Vector3 v) {
+		return new Point3(x + v.x, y + v.y, z + v.z);
+	}
+
+	public Point3 add(Point3 v) {
 		return new Point3(x + v.x, y + v.y, z + v.z);
 	}
 

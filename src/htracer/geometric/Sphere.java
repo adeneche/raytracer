@@ -9,8 +9,8 @@ import static htracer.utility.Constants.kEpsilon;
 
 public class Sphere extends GeometricObject {
 
-	private Point3 center;
-	private float radius;
+	public Point3 center;
+	public float radius;
 
 	public Sphere() {
 		center = new Point3();

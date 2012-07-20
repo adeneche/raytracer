@@ -78,7 +78,11 @@ public class Vector3 {
 		y /= len;
 		z /= len;
 	}
-	
+
+	public Point3 toPoint() {
+		return new Point3(x, y, z);
+	}
+
 	public float dot(Vector3 v) {
 		return dot(this, v);
 	}

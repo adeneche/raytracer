@@ -33,6 +33,8 @@ public class ThinLens extends Camera {
 
 		System.out.print("Rendering: [");
 		long start = System.currentTimeMillis();
+		int total = vp.hres * vp.vres * vp.numSamples; // total number of ray shots
+		int current = 0; // current number of ray shots
 
 		for (int r = 0; r < vp.vres - 1; r++) // up
 			for (int c = 0; c < vp.hres - 1; c++) { // across
@@ -50,11 +52,18 @@ public class ThinLens extends Camera {
 					ray.d.set( rayDirection(pp, lp));
 					
 					L.sadd(world.tracer.traceRay(ray, depth));
+
+					current++;
 				}
 				
 				L.sdiv(vp.numSamples);
 				L.smul(exposureTime);
 				world.displayPixel(r, c, L);
+
+				if (current > (total / 10)) {
+					System.out.print(".");
+					current -= total / 10;
+				}
 			}
 
 		System.out.println("]. Done in " + (System.currentTimeMillis() - start)
