@@ -42,7 +42,6 @@ public class Plane extends GeometricObject {
 	@Override
 	public boolean hit(Ray ray, ShadeRec sr) {
 		float t = n.dot(a.sub(ray.o)) / n.dot(ray.d);
-		System.out.println("t = " + t);
 
 		if (t > kEpsilon) {
 			sr.t = t;
@@ -54,5 +53,21 @@ public class Plane extends GeometricObject {
 
 		return false;
 	}
+
+	@Override
+	public boolean shadowHit(Ray ray, ShadowOut so) {
+		if (!shadows) return false;
+		
+		float t = n.dot(a.sub(ray.o)) / n.dot(ray.d);
+
+		if (t > kEpsilon) {
+			so.t = t;
+			return true;
+		}
+
+		return false;
+	}
+	
+	
 
 }

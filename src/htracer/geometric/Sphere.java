@@ -81,4 +81,35 @@ public class Sphere extends GeometricObject {
 		return false;
 	}
 
+	@Override
+	public boolean shadowHit(Ray ray, ShadowOut so) {
+		if (!shadows) return false;
+		
+		float t;
+		Vector3 temp = ray.o.sub(center);
+		float a = ray.d.lenSq();
+		float b = 2 * temp.dot(ray.d);
+		float c = temp.lenSq() - radius * radius;
+		float disc = b * b - 4 * a * c;
+
+		if (disc < 0.0)
+			return false;
+		else {
+			float e = (float) Math.sqrt(disc);
+			float denom = 2 * a;
+			t = (-b - e) / denom; // smaller root
+
+			if (t <= kEpsilon) {
+				t = (-b + e) / denom; // larger root
+			}
+
+			if (t > kEpsilon) {
+				so.t = t;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

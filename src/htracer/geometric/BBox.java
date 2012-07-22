@@ -123,6 +123,75 @@ public class BBox extends GeometricObject {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean shadowHit(Ray ray, ShadowOut so) {
+		if (!shadows) return false;
+		
+		float ox = ray.o.x; float oy = ray.o.y; float oz = ray.o.z;
+		float dx = ray.d.x; float dy = ray.d.y; float dz = ray.d.z;
+		
+		float tx_min, ty_min, tz_min;
+		float tx_max, ty_max, tz_max; 
+
+		float a = 1.0f / dx;
+		if (a >= 0) {
+			tx_min = (x0 - ox) * a;
+			tx_max = (x1 - ox) * a;
+		}
+		else {
+			tx_min = (x1 - ox) * a;
+			tx_max = (x0 - ox) * a;
+		}
+		
+		float b = 1.0f / dy;
+		if (b >= 0) {
+			ty_min = (y0 - oy) * b;
+			ty_max = (y1 - oy) * b;
+		}
+		else {
+			ty_min = (y1 - oy) * b;
+			ty_max = (y0 - oy) * b;
+		}
+		
+		float c = 1.0f / dz;
+		if (c >= 0) {
+			tz_min = (z0 - oz) * c;
+			tz_max = (z1 - oz) * c;
+		}
+		else {
+			tz_min = (z1 - oz) * c;
+			tz_max = (z0 - oz) * c;
+		}
+		
+		float t0, t1;
+		
+		// find largest entering t value
+		if (tx_min > ty_min)
+			t0 = tx_min;
+		else
+			t0 = ty_min;
+			
+		if (tz_min > t0)
+			t0 = tz_min;	
+			
+		// find smallest exiting t value
+			
+		if (tx_max < ty_max)
+			t1 = tx_max;
+		else
+			t1 = ty_max;
+			
+		if (tz_max < t1)
+			t1 = tz_max;
+			
+		if (t0 < t1 && t1 > Constants.kEpsilon) {
+			so.t = t0;
+			return true;
+		}
+		
+		return false;
+	}
 
 	public boolean isInside(Point3 p) {
 		return ((p.x > x0 && p.x < x1) && (p.y > y0 && p.y < y1) && (p.z > z0 && p.z < z1));

@@ -4,11 +4,13 @@ import static htracer.utility.Constants.brown;
 import static htracer.utility.Constants.white;
 import htracer.cameras.ThinLens;
 import htracer.geometric.BBox;
+import htracer.lights.Light;
 import htracer.lights.PointLight;
 import htracer.materials.Matte;
 import htracer.math.Point3;
 import htracer.samplers.MultiJittered;
 import htracer.tracers.RayCast;
+import htracer.utility.Constants;
 import htracer.utility.RGBColor;
 import htracer.world.World;
 
@@ -18,7 +20,7 @@ public class Ch14World extends World {
 
 	@Override
 	public void build() {
-		boolean draft = true;
+		boolean draft = false;
 		
 		vp.hres = 400;
 		vp.vres = 400;
@@ -43,6 +45,8 @@ public class Ch14World extends World {
 //		camera = new Pinhole();
 		
 		// LIGHTS
+		Light.globalShadows = !draft;
+		
 		lights.add(new PointLight(new Point3(0, -125, 150), 4f, white));
 		
 		// OBJECTS
@@ -50,7 +54,7 @@ public class Ch14World extends World {
 		objects.add(newBBox(-100, 100, 0, 3, -100, 100, brown));
 		
 		int bwidth = 5;
-		int num = 20;
+		int num = 10;
 		float pad = (200 - num*bwidth) / (num - 1);
 		
 		for (int r = 0; r < num; r++) {
@@ -58,8 +62,8 @@ public class Ch14World extends World {
 				float height = (float) (Math.random()*20 + 50);
 				float x = r*(bwidth+pad) - 100;
 				float z = c*(bwidth+pad) - 100;
-				objects.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, 
-					new RGBColor((float)Math.random(), (float)Math.random(), (float)Math.random())));
+				objects.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, Constants.gray));
+//					new RGBColor((float)Math.random(), (float)Math.random(), (float)Math.random())));
 			}
 		}
 	}

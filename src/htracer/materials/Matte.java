@@ -4,6 +4,7 @@ import htracer.brdfs.Lambertian;
 import htracer.lights.Light;
 import htracer.math.Vector3;
 import htracer.utility.RGBColor;
+import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
 public class Matte extends Material {
@@ -62,8 +63,18 @@ public class Matte extends Material {
 			Vector3 wi = light.getDirection(sr);    
 			float ndotwi = sr.normal.dot(wi);
 		
-			if (ndotwi > 0.0) 
-				L.sadd( diffuse_brdf.f(sr, wo, wi).mul( light.L(sr).mul(ndotwi)) );
+			if (ndotwi > 0.0) {
+				boolean inShadow = false;
+				
+				if (light.castShadows()) {
+					Ray shadowRay = new Ray(sr.hitPoint, wi);
+					inShadow = light.inShadow(shadowRay, sr);
+				}
+				
+				if (!inShadow) {
+					L.sadd( diffuse_brdf.f(sr, wo, wi).mul( light.L(sr).mul(ndotwi)) );
+				}
+			}
 		}
 		
 		return L;

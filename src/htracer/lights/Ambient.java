@@ -2,6 +2,7 @@ package htracer.lights;
 
 import htracer.math.Vector3;
 import htracer.utility.RGBColor;
+import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
 public class Ambient extends Light {
@@ -24,5 +25,12 @@ public class Ambient extends Light {
 	public RGBColor L(ShadeRec sr) {
 		return color.mul(ls);
 	}
+
+	@Override
+	public boolean inShadow(Ray ray, ShadeRec sr) {
+		return false;
+	}
+	
+	
 
 }
