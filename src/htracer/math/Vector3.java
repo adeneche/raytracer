@@ -22,6 +22,12 @@ public class Vector3 {
 		this(v.x, v.y, v.z);
 	}
 	
+	public void set(Normal n) {
+		x = n.x;
+		y = n.y;
+		z = n.z;
+	}
+	
 	public void set(Vector3 v) {
 		x = v.x;
 		y = v.y;
