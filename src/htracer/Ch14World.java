@@ -22,8 +22,8 @@ public class Ch14World extends World {
 		boolean draft = false;
 		boolean occlusion = true;
 		
-		vp.hres = 400;
-		vp.vres = 400;
+		vp.hres = 800;
+		vp.vres = 600;
 		vp.s = 0.5f;
 		vp.setSamples(draft ? 1:64);
 		
@@ -38,7 +38,7 @@ public class Ch14World extends World {
 		thinLens.d = 40;
 		thinLens.f = 125;
 		thinLens.lensRadius = draft ? 0:2;
-		thinLens.zoom = 3.5f;
+		thinLens.zoom = 6f;
 		thinLens.computeUVW();
 		
 		camera = thinLens;
@@ -58,10 +58,11 @@ public class Ch14World extends World {
 		
 		objects.add(newBBox(-100, 100, 0, 3, -100, 100, gray));
 		
-		int bwidth = 25;
-		int num = 4;
+		int bwidth = 5;
+		int num = 10;
 		float pad = (200 - num*bwidth) / (num - 1);
 		
+		//TODO générer chaque box aléatoirement dans son carré (multi-jittering)
 		for (int r = 0; r < num; r++) {
 			for (int c = 0; c < num; c++) {
 				float height = (float) (Math.random()*20 + 50);
@@ -85,7 +86,7 @@ public class Ch14World extends World {
 		world.renderScene();
 		
 		try {
-			world.saveImage("chapter17.png");
+			world.saveImage("chapter17o.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
