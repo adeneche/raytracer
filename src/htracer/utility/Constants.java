@@ -22,5 +22,6 @@ public class Constants {
 	public static final RGBColor dark_yellow = new RGBColor(0.61f, 0.61f, 0);						
 	public static final RGBColor light_purple = new RGBColor(0.65f, 0.3f, 1);						
 	public static final RGBColor dark_purple = new RGBColor(0.5f, 0, 1);							
+	public static final RGBColor gray = new RGBColor(0.5f, 0.5f, .5f);							
 
 }

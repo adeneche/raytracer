@@ -1,5 +1,8 @@
 package htracer.utility;
 
+import htracer.materials.Material;
+import htracer.math.Point3;
+import htracer.math.Vector3;
 import htracer.world.World;
 
 /**
@@ -8,19 +11,27 @@ import htracer.world.World;
  */
 public class ShadeRec {
 
-	public float t; // hit distance from ray origin
+	public float t; // ray parameter
+
 	public boolean hitAnObject; // did the ray hit an object ?
-	public Point3 localHitPoint; // world coordinates of hit point
+	public Point3 hitPoint; // world coordinates of hit point
+	public Point3 localHitPoint; // for attaching textures to objects
 	public Normal normal; // normal at hit point
-	public RGBColor color; // used in chapter 3 only
 	public World w; // world reference for shading
 	
+	public Material material; // nearest object's material
+	public Ray ray; // required for specular highlights and area lights
+	public int depth; // recursion depth
+	public Vector3 dir; // for area lights
+	
 	public ShadeRec(World wr) {
-		hitAnObject = false;
-		localHitPoint= new Point3();
+		hitPoint= new Point3();
+		localHitPoint = new Point3();
 		normal = new Normal(0, 0, 1);
-		color = new RGBColor();
 		w = wr;
+		
+		ray = new Ray();
+		dir = new Vector3();
 	}
 	
 	public ShadeRec(ShadeRec sr) {
@@ -30,9 +41,13 @@ public class ShadeRec {
 	
 	public void set(ShadeRec sr) {
 		hitAnObject = sr.hitAnObject;
+		hitPoint.set(sr.hitPoint);
 		localHitPoint.set(sr.localHitPoint);
 		normal.set(sr.normal);
-		color.set(sr.color);
+		ray.set(sr.ray);
+		depth = sr.depth;
+		dir.set(sr.dir);
+		material = sr.material;
 		t = sr.t;
 	}
 }

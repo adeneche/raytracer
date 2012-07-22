@@ -1,6 +1,6 @@
 package htracer.samplers;
 
-import htracer.Point2;
+import htracer.math.Point2;
 
 public class MultiJittered extends Sampler {
 
@@ -12,6 +12,15 @@ public class MultiJittered extends Sampler {
 		super(n, ns);
 	}
 	
+	public MultiJittered(MultiJittered sp) {
+		super(sp);
+	}
+	
+	@Override
+	public Sampler clone() {
+		return new MultiJittered(this);
+	}
+
 	/**
 	 * 
 	 */

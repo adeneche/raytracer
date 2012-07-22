@@ -1,9 +1,12 @@
 package htracer.utility;
 
+import htracer.math.Point3;
+import htracer.math.Vector3;
+
 public class Ray {
 	public Point3 o; // origin
 	public Vector3 d; // direction
-	public float tmin;
+//	public float tmin;
 	
 	public Ray() {
 		o = new Point3();
@@ -18,12 +21,12 @@ public class Ray {
 	public Ray(Ray ray) {
 		o = new Point3(ray.o);
 		d = new Vector3(ray.d);
-		tmin = ray.tmin;
+//		tmin = ray.tmin;
 	}
 	
 	public void set(Ray ray) {
 		o.set(ray.o);
 		d.set(ray.d);
-		tmin = ray.tmin;
+//		tmin = ray.tmin;
 	}
 }

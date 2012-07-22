@@ -14,9 +14,5 @@ public abstract class Tracer {
 	
 	public abstract RGBColor traceRay(Ray ray);
 
-	public RGBColor traceRay(Ray ray, int depth) {
-		if (world.vp.maxDepth != -1 && depth > world.vp.maxDepth)
-			return world.backgroundColor ;
-		return traceRay(ray);
-	}
+	public abstract RGBColor traceRay(Ray ray, int depth);
 }

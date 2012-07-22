@@ -1,13 +1,20 @@
 package htracer.geometric;
 
-import static htracer.utility.Constants.red;
-import htracer.utility.RGBColor;
+import htracer.materials.Material;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
 public abstract class GeometricObject {
 
-	public RGBColor color = new RGBColor(red); // only used in chapter 3
+	protected Material material;
 	
 	public abstract boolean hit(Ray ray, ShadeRec sr);
+	
+	public Material getMaterial() {
+		return material;
+	}
+	
+	public void setMaterial(Material m) {
+		material = m;
+	}
 }

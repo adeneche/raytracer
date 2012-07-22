@@ -1,9 +1,9 @@
 package htracer.cameras;
 
+import htracer.math.Point2;
+import htracer.math.Vector3;
 import htracer.utility.Ray;
-import htracer.Point2;
 import htracer.utility.RGBColor;
-import htracer.utility.Vector3;
 import htracer.world.ViewPlane;
 import htracer.world.World;
 import static htracer.utility.Constants.black;

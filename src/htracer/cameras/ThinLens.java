@@ -1,11 +1,11 @@
 package htracer.cameras;
 
 import static htracer.utility.Constants.black;
-import htracer.Point2;
+import htracer.math.Point2;
+import htracer.math.Vector3;
 import htracer.samplers.Sampler;
 import htracer.utility.RGBColor;
 import htracer.utility.Ray;
-import htracer.utility.Vector3;
 import htracer.world.ViewPlane;
 import htracer.world.World;
 

@@ -1,7 +1,7 @@
 package htracer.geometric;
 
+import htracer.math.Point3;
 import htracer.utility.Normal;
-import htracer.utility.Point3;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
@@ -47,7 +47,7 @@ public class Plane extends GeometricObject {
 		if (t > kEpsilon) {
 			sr.t = t;
 			sr.normal = n;
-			sr.localHitPoint = ray.o.add(ray.d.mul(t));
+			sr.hitPoint = ray.o.add(ray.d.mul(t));
 
 			return true;
 		}

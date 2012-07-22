@@ -1,7 +1,6 @@
 package htracer.samplers;
 
-import htracer.Point2;
-import htracer.utility.RNG;
+import htracer.math.Point2;
 
 public class Jittered extends Sampler {
 
@@ -13,6 +12,15 @@ public class Jittered extends Sampler {
 		super(num);
 	}
 	
+	public Jittered(Jittered sp) {
+		super(sp);
+	}
+	
+	@Override
+	public Sampler clone() {
+		return new Jittered(this);
+	}
+
 	@Override
 	public void generateSamples() {
 		int n = (int)Math.sqrt(numSamples);

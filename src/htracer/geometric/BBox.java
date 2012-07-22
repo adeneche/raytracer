@@ -1,7 +1,7 @@
 package htracer.geometric;
 
+import htracer.math.Point3;
 import htracer.utility.Constants;
-import htracer.utility.Point3;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
 
@@ -116,8 +116,8 @@ public class BBox extends GeometricObject {
 				sr.normal.x = sr.normal.y = 0;
 			}
 			sr.normal.normalize();
-
-			sr.localHitPoint = ray.o.add(ray.d.mul(t0));
+			sr.material = getMaterial();
+			sr.hitPoint = ray.o.add(ray.d.mul(t0));
 			return true;
 		}
 		

@@ -1,6 +1,6 @@
 package htracer.samplers;
 
-import htracer.Point2;
+import htracer.math.Point2;
 
 public class Regular extends Sampler {
 
@@ -12,6 +12,15 @@ public class Regular extends Sampler {
 		super(num, numsets);
 	}
 	
+	public Regular(Regular sp) {
+		super(sp);
+	}
+	
+	@Override
+	public Sampler clone() {
+		return new Regular(this);
+	}
+
 	@Override
 	public void generateSamples() {
 		int n = (int) Math.sqrt(numSamples);

@@ -1,6 +1,8 @@
 package htracer.utility;
 
-import htracer.Matrix;
+import htracer.math.Matrix;
+import htracer.math.Point3;
+import htracer.math.Vector3;
 
 public class Normal {
 
@@ -88,6 +90,10 @@ public class Normal {
 //				mat.m[0][1] * n.x + mat.m[1][1] * n.y + mat.m[2][1] * n.z,
 //				mat.m[0][2] * n.x + mat.m[1][2] * n.y + mat.m[2][2] * n.z));
 		throw new RuntimeException("Not Yet Implemented");
+	}
+
+	public Vector3 toVector3() {
+		return new Vector3(x, y, z);
 	}
 
 }

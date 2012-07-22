@@ -1,7 +1,7 @@
 package htracer.cameras;
 
-import htracer.utility.Point3;
-import htracer.utility.Vector3;
+import htracer.math.Point3;
+import htracer.math.Vector3;
 import htracer.world.World;
 
 public abstract class Camera {

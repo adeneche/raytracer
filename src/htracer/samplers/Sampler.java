@@ -1,7 +1,7 @@
 package htracer.samplers;
 
-import htracer.Point2;
-import htracer.utility.Point3;
+import htracer.math.Point2;
+import htracer.math.Point3;
 import htracer.utility.RNG;
 
 import java.util.Collections;
@@ -45,6 +45,20 @@ public abstract class Sampler {
 		generateSamples();
 	}
 
+	public Sampler(Sampler sp) {
+		numSamples = sp.numSamples;
+		numSets = sp.numSets;
+		samples = sp.samples;
+		shuffledIndices = sp.shuffledIndices;
+		diskSamples = sp.diskSamples;
+		hemisphereSamples = sp.hemisphereSamples;
+		count = sp.count;
+		
+		rng = sp.rng;
+	}
+	
+	public abstract Sampler clone();
+	
 	/** generate sampel patterns in a unit square */
 	public abstract void generateSamples();
 

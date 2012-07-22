@@ -1,10 +1,10 @@
 package htracer.geometric;
 
-import htracer.utility.Point3;
-import htracer.utility.RGBColor;
+import htracer.materials.Material;
+import htracer.math.Point3;
+import htracer.math.Vector3;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
-import htracer.utility.Vector3;
 import static htracer.utility.Constants.kEpsilon;
 
 public class Sphere extends GeometricObject {
@@ -22,9 +22,9 @@ public class Sphere extends GeometricObject {
 		this.radius = radius;
 	}
 
-	public Sphere(Point3 center, float radius, RGBColor color) {
+	public Sphere(Point3 center, float radius, Material m) {
 		this(center, radius);
-		this.color.set(color);
+		setMaterial(m);
 	}
 	
 	public Sphere(Sphere sphere) {
@@ -72,7 +72,8 @@ public class Sphere extends GeometricObject {
 			if (t > kEpsilon) {
 				sr.t = t;
 				sr.normal.set((temp.add(ray.d.mul(t))).mul(1 / radius));
-				sr.localHitPoint = ray.o.add(ray.d.mul(t));
+				sr.hitPoint = ray.o.add(ray.d.mul(t));
+				sr.material = getMaterial();
 				return true;
 			}
 		}
