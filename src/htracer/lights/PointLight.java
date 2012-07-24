@@ -1,6 +1,5 @@
 package htracer.lights;
 
-import htracer.geometric.GeometricObject.ShadowOut;
 import htracer.math.Point3;
 import htracer.math.Vector3;
 import htracer.utility.RGBColor;
@@ -32,13 +31,7 @@ public class PointLight extends Light {
 	@Override
 	public boolean inShadow(Ray ray, ShadeRec sr) {
 		float d = location.len(ray.o);
-		ShadowOut so = new ShadowOut();
-		
-		if (sr.w.shadowHit(ray, so, d)) {
-			return true;
-		}
-
-		return false;
+		return sr.w.shadowHit(ray, d);
 	}
 
 }

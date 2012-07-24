@@ -16,6 +16,7 @@ public class BBox extends GeometricObject {
 	
 	public BBox() {
 		this(-1, 1, -1, 1, -1, 1);
+
 	}
 	
 	public BBox(float x0, float x1, float y0, float y1, float z0, float z1) {
@@ -51,72 +52,66 @@ public class BBox extends GeometricObject {
 		
 		float tx_min, ty_min, tz_min;
 		float tx_max, ty_max, tz_max; 
-
+		float temp;
+		
 		float a = 1.0f / dx;
-		if (a >= 0) {
-			tx_min = (x0 - ox) * a;
-			tx_max = (x1 - ox) * a;
-		}
-		else {
-			tx_min = (x1 - ox) * a;
-			tx_max = (x0 - ox) * a;
+		tx_min = (x0 - ox) * a;
+		tx_max = (x1 - ox) * a;
+		if (tx_min > tx_max) {
+			temp = tx_min;
+			tx_min = tx_max;
+			tx_max = temp;
 		}
 		
 		float b = 1.0f / dy;
-		if (b >= 0) {
-			ty_min = (y0 - oy) * b;
-			ty_max = (y1 - oy) * b;
-		}
-		else {
-			ty_min = (y1 - oy) * b;
-			ty_max = (y0 - oy) * b;
+		ty_min = (y0 - oy) * b;
+		ty_max = (y1 - oy) * b;
+		if (ty_min > ty_max) {
+			temp = ty_min;
+			ty_min = ty_max;
+			ty_max = temp;
 		}
 		
 		float c = 1.0f / dz;
-		if (c >= 0) {
-			tz_min = (z0 - oz) * c;
-			tz_max = (z1 - oz) * c;
-		}
-		else {
-			tz_min = (z1 - oz) * c;
-			tz_max = (z0 - oz) * c;
+		tz_min = (z0 - oz) * c;
+		tz_max = (z1 - oz) * c;
+		if (tz_min > tz_max) {
+			temp = tz_min;
+			tz_min = tz_max;
+			tz_max = temp;
 		}
 		
 		float t0, t1;
 		
 		// find largest entering t value
-		if (tx_min > ty_min)
-			t0 = tx_min;
-		else
+		t0 = tx_min;
+		if (ty_min > t0)
 			t0 = ty_min;
-			
 		if (tz_min > t0)
 			t0 = tz_min;	
 			
 		// find smallest exiting t value
-			
-		if (tx_max < ty_max)
-			t1 = tx_max;
-		else
+		t1 = tx_max;
+		if (ty_max < t1)
 			t1 = ty_max;
-			
 		if (tz_max < t1)
 			t1 = tz_max;
 			
 		if (t0 < t1 && t1 > Constants.kEpsilon) {
 			sr.t = t0;
-			
-			Point3 temp = new Point3((x1 + x0) / 2, (y1 + y0) / 2, (z1 + z0) / 2); // centre du box
-			sr.normal.set(ray.o.sub(temp));
+
+
+			sr.normal.x = sr.normal.y = sr.normal.z = 0;
 			if (t0 == tx_min) {
-				sr.normal.y = sr.normal.z = 0;
+				float cx = (x1 + x0) / 2;
+				sr.normal.x = (ox > cx) ? 1:-1;
 			} else if (t0 == ty_min) {
-				sr.normal.x = sr.normal.z = 0;
+				float cy = (y1 + y0) / 2;
+				sr.normal.y = (oy > cy) ? 1:-1;
 			} else {
-				sr.normal.x = sr.normal.y = 0;
+				float cz = (z1 + z0) / 2;
+				sr.normal.z = (oz > cz) ? 1:-1;
 			}
-			sr.normal.normalize();
-			sr.material = getMaterial();
 
 			return true;
 		}
@@ -125,7 +120,7 @@ public class BBox extends GeometricObject {
 	}
 	
 	@Override
-	public boolean shadowHit(Ray ray, ShadowOut so, float dist) {
+	public boolean shadowHit(Ray ray, float dist) {
 		if (!shadows) return false;
 		
 		float ox = ray.o.x; float oy = ray.o.y; float oz = ray.o.z;
@@ -133,60 +128,52 @@ public class BBox extends GeometricObject {
 		
 		float tx_min, ty_min, tz_min;
 		float tx_max, ty_max, tz_max; 
-
+		float temp;
+		
 		float a = 1.0f / dx;
-		if (a >= 0) {
-			tx_min = (x0 - ox) * a;
-			tx_max = (x1 - ox) * a;
-		}
-		else {
-			tx_min = (x1 - ox) * a;
-			tx_max = (x0 - ox) * a;
+		tx_min = (x0 - ox) * a;
+		tx_max = (x1 - ox) * a;
+		if (tx_min > tx_max) {
+			temp = tx_min;
+			tx_min = tx_max;
+			tx_max = temp;
 		}
 		
 		float b = 1.0f / dy;
-		if (b >= 0) {
-			ty_min = (y0 - oy) * b;
-			ty_max = (y1 - oy) * b;
-		}
-		else {
-			ty_min = (y1 - oy) * b;
-			ty_max = (y0 - oy) * b;
+		ty_min = (y0 - oy) * b;
+		ty_max = (y1 - oy) * b;
+		if (ty_min > ty_max) {
+			temp = ty_min;
+			ty_min = ty_max;
+			ty_max = temp;
 		}
 		
 		float c = 1.0f / dz;
-		if (c >= 0) {
-			tz_min = (z0 - oz) * c;
-			tz_max = (z1 - oz) * c;
-		}
-		else {
-			tz_min = (z1 - oz) * c;
-			tz_max = (z0 - oz) * c;
+		tz_min = (z0 - oz) * c;
+		tz_max = (z1 - oz) * c;
+		if (tz_min > tz_max) {
+			temp = tz_min;
+			tz_min = tz_max;
+			tz_max = temp;
 		}
 		
 		float t0, t1;
 		
 		// find largest entering t value
-		if (tx_min > ty_min)
-			t0 = tx_min;
-		else
+		t0 = tx_min;
+		if (ty_min > t0)
 			t0 = ty_min;
-			
 		if (tz_min > t0)
 			t0 = tz_min;	
 			
 		// find smallest exiting t value
-			
-		if (tx_max < ty_max)
-			t1 = tx_max;
-		else
+		t1 = tx_max;
+		if (ty_max < t1)
 			t1 = ty_max;
-			
 		if (tz_max < t1)
 			t1 = tz_max;
 			
 		if (t0 < t1 && t1 > Constants.kEpsilon && t0 < dist) {
-			so.t = t0;
 			return true;
 		}
 		
@@ -195,5 +182,10 @@ public class BBox extends GeometricObject {
 
 	public boolean isInside(Point3 p) {
 		return ((p.x > x0 && p.x < x1) && (p.y > y0 && p.y < y1) && (p.z > z0 && p.z < z1));
+	}
+
+	@Override
+	public BBox getBoundingBox() {
+		return this;
 	}
 }

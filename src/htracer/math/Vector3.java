@@ -116,6 +116,10 @@ public class Vector3 {
 		normalize();
 		return this;
 	}
+
+	public Normal toNormal() {
+		return new Normal(x, y, z);
+	}
 	
 
 }

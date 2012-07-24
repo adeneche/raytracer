@@ -11,7 +11,11 @@ public abstract class GeometricObject {
 	public boolean shadows = true;
 	
 	public abstract boolean hit(Ray ray, ShadeRec sr);
-	public abstract boolean shadowHit(Ray ray, ShadowOut so, float dist);
+	public abstract boolean shadowHit(Ray ray, float dist);
+
+	public BBox getBoundingBox() {
+		return new BBox();
+	}
 	
 	public Material getMaterial() {
 		return material;
@@ -19,9 +23,5 @@ public abstract class GeometricObject {
 	
 	public void setMaterial(Material m) {
 		material = m;
-	}
-
-	public static class ShadowOut {
-		public float t;
 	}
 }

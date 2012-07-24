@@ -1,6 +1,7 @@
 package htracer;
 
 import static htracer.utility.Constants.*;
+import htracer.cameras.Pinhole;
 import htracer.cameras.ThinLens;
 import htracer.geometric.BBox;
 import htracer.lights.AmbiantOccluder;
@@ -40,10 +41,15 @@ public class Ch22World extends World {
 		thinLens.f = 125;
 		thinLens.lensRadius = draft ? 0:2;
 		thinLens.zoom = 6;
-		thinLens.computeUVW();
 		
-		camera = thinLens;
-//		camera = new Pinhole();
+		Pinhole pinhole = new Pinhole();
+		pinhole.eye.set(75, -125, 150);
+		pinhole.lookat.set(0, 0, 0);
+		pinhole.d = 40;
+		pinhole.zoom = 6;
+		
+//		camera = thinLens;
+		camera = pinhole;
 		
 		// LIGHTS
 		Light.globalShadows = !draft;
@@ -99,7 +105,7 @@ public class Ch22World extends World {
 		world.renderScene();
 		
 		try {
-			world.saveImage("chapter22.fixed2." + (draft ? "d": (occlusion ? "o":"")) + "(" + duration + "s).png");
+			world.saveImage("chapter22p2." + (draft ? "d": (occlusion ? "o":"")) + "(" + duration + "s).png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
