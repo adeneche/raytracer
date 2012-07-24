@@ -51,6 +51,6 @@ public class AmbiantOccluder extends Ambient {
 
 	@Override
 	public boolean inShadow(Ray ray, ShadeRec sr) {
-		return sr.w.shadowHit(ray, Constants.kHugeValue);
+		return sr.w.compound.shadowHit(ray, Constants.kHugeValue);
 	}
 }

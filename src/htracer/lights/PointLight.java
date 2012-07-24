@@ -31,7 +31,7 @@ public class PointLight extends Light {
 	@Override
 	public boolean inShadow(Ray ray, ShadeRec sr) {
 		float d = location.len(ray.o);
-		return sr.w.shadowHit(ray, d);
+		return sr.w.compound.shadowHit(ray, d);
 	}
 
 }

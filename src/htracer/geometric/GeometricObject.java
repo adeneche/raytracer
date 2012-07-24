@@ -10,9 +10,12 @@ public abstract class GeometricObject {
 	
 	public boolean shadows = true;
 	
-	public abstract boolean hit(Ray ray, ShadeRec sr);
-	public abstract boolean shadowHit(Ray ray, float dist);
-
+	public abstract boolean hit(Ray ray, ShadeRec sr, float dist);
+	
+	public boolean shadowHit(Ray ray, float dist) {
+		return hit(ray, null, dist);
+	}
+	
 	public BBox getBoundingBox() {
 		return new BBox();
 	}

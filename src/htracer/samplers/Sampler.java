@@ -11,9 +11,9 @@ import static htracer.utility.Constants.PI;
 
 public abstract class Sampler {
 
-	public int numSamples; // num sample points in a pattern
-
+	protected int numSamples; // num sample points in a pattern
 	protected int numSets; // num sample sets (patterns) stored
+	
 	protected Point2[] samples; // sample points on a unit square
 	protected Point2[] diskSamples; // sample points on a unit disk
 	protected Point3[] hemisphereSamples; //sample points on a unit sphere
@@ -56,6 +56,9 @@ public abstract class Sampler {
 		
 		rng = sp.rng;
 	}
+	
+	public int getNumSamples() { return numSamples; }
+	public int getNumSets() { return numSets; }
 	
 	public abstract Sampler clone();
 	
@@ -143,8 +146,6 @@ public abstract class Sampler {
 
 			diskSamples[j] = new Point2((float) (r * Math.cos(phi)), (float) (r * Math.sin(phi)));
 		}
-
-		// samples.erase(samples.begin(), samples.end());
 	}
 
 	/**
@@ -174,12 +175,20 @@ public abstract class Sampler {
 		return samples[jump
 				+ shuffledIndices[jump + (int) (count++ % numSamples)]];
 	}
+
+	public Point2 sampleUnitSquare(int Jump, int Count) {
+		return samples[Jump	+ shuffledIndices[Jump + (int) (Count % numSamples)]];
+	}
 	
 	public Point2 sampleUnitDisk() {
 		if (count % numSamples == 0)  									// start of a new pixel
 			jump = rng.nextInt(numSets) * numSamples;
 		
 		return diskSamples[jump + shuffledIndices[jump + (int)(count++ % numSamples)]];
+	}
+	
+	public Point2 sampleUnitDisk(int Jump, int Count) {
+		return diskSamples[Jump + shuffledIndices[Jump + (int)(Count % numSamples)]];
 	}
 
 	public Point3 sampleHemisphere() {

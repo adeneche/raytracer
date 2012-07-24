@@ -53,7 +53,7 @@ public class ViewPlane {
 	}
 
 	public void setSampler(Sampler sp) {
-		numSamples = sp.numSamples;
+		numSamples = sp.getNumSamples();
 		sampler = sp;
 	}
 	

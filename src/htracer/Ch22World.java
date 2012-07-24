@@ -2,8 +2,11 @@ package htracer;
 
 import static htracer.utility.Constants.*;
 import htracer.cameras.Pinhole;
+import htracer.cameras.SpPinhole;
+import htracer.cameras.SpThinLens;
 import htracer.cameras.ThinLens;
 import htracer.geometric.BBox;
+import htracer.geometric.compound.Grid;
 import htracer.lights.AmbiantOccluder;
 import htracer.lights.Light;
 import htracer.lights.PointLight;
@@ -20,6 +23,7 @@ public class Ch22World extends World {
 	static boolean draft = false;
 	static boolean occlusion = true;
 	static long duration;
+	static boolean useFrame = false;
 	
 	@Override
 	public void build() {
@@ -33,7 +37,7 @@ public class Ch22World extends World {
 		
 		tracer = new RayCast(this);  
 		
-		ThinLens thinLens = new ThinLens();
+		ThinLens thinLens = new SpThinLens();
 		thinLens.setSampler(new MultiJittered(vp.numSamples));
 		thinLens.eye.set(75, -125, 150);
 		thinLens.lookat.set(0, 0, 0);
@@ -41,15 +45,15 @@ public class Ch22World extends World {
 		thinLens.f = 125;
 		thinLens.lensRadius = draft ? 0:2;
 		thinLens.zoom = 6;
+		camera = thinLens;
 		
-		Pinhole pinhole = new Pinhole();
-		pinhole.eye.set(75, -125, 150);
-		pinhole.lookat.set(0, 0, 0);
-		pinhole.d = 40;
-		pinhole.zoom = 6;
+//		Pinhole pinhole = new SpPinhole();
+//		pinhole.eye.set(75, -125, 150);
+//		pinhole.lookat.set(0, 0, 0);
+//		pinhole.d = 40;
+//		pinhole.zoom = 6;
+//		camera = pinhole;
 		
-//		camera = thinLens;
-		camera = pinhole;
 		
 		// LIGHTS
 		Light.globalShadows = !draft;
@@ -62,30 +66,34 @@ public class Ch22World extends World {
 		}
 		
 		// OBJECTS
+		compound = new Grid();
 		
-		objects.add(newBBox(-100, 100, 0, 3, -100, 100, gray));
+		compound.add(newBBox(-100, 100, 0, 3, -100, 100, gray));
 		
-		int bwidth = 5;
+		int bwidth = 10;
 		int num = 10;
 		float pad = (200 - num*bwidth) / (num - 1);
 		
 		//TODO générer chaque box aléatoirement dans son carré (multi-jittering)
 		for (int r = 0; r < num; r++) {
 			for (int c = 0; c < num; c++) {
-				float height = 50; //(float) (Math.random()*20 + 50);
+				float height = (float) (Math.random()*20 + 50);
 				float x = r*(bwidth+pad) - 100;
 				float z = c*(bwidth+pad) - 100;
-				objects.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, gray));
+				compound.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, gray));
 			}
 		}
+		
+		System.out.println("Seting up cells...");
+		((Grid)compound).setupCells();
 	}
 
 	
 	@Override
-	public void renderScene() {
+	public void renderScene(boolean useFrame) {
 		long start = System.currentTimeMillis();
 
-		super.renderScene();
+		super.renderScene(useFrame);
 
 		duration = (System.currentTimeMillis() - start) / 1000;
 		System.out.println("]. Done in " + duration + "s");
@@ -102,14 +110,14 @@ public class Ch22World extends World {
 	public static void main(String[] args) {
 		World world = new Ch22World();
 		world.build();
-		world.renderScene();
+		world.renderScene(!draft && useFrame);
 		
 		try {
-			world.saveImage("chapter22p2." + (draft ? "d": (occlusion ? "o":"")) + "(" + duration + "s).png");
+			world.saveImage("chapter22." + (draft ? "d": (occlusion ? "o":"")) + "(" + duration + "s).png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		System.exit(0);
+		if (world.frame == null) System.exit(0);
 	}
 }

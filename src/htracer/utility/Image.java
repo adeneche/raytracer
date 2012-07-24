@@ -62,7 +62,7 @@ public class Image {
 		
 	}
 	
-	public void writePNG(OutputStream out) throws IOException {
+	public BufferedImage toBufferedImage() {
 		BufferedImage image = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_RGB);
 
 		for (int i = 0; i < nx; i++) {
@@ -83,7 +83,11 @@ public class Image {
 			}
 		}
 		
-		ImageIO.write(image, "png", out);
+		return image;
+	}
+	
+	public void writePNG(OutputStream out) throws IOException {
+		ImageIO.write(toBufferedImage(), "png", out);
 	}
 	
 	public static Image readPNG(InputStream in) throws IOException {

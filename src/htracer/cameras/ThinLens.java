@@ -11,7 +11,7 @@ import htracer.world.World;
 
 public class ThinLens extends Camera {
 
-	private Sampler sampler;	// sampler object
+	protected Sampler sampler;	// sampler object
 	public float lensRadius; 	// lens radius
 	public float d;			// view plane distance
 	public float f;			// focal plane distance

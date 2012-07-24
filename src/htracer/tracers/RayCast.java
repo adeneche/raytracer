@@ -1,5 +1,6 @@
 package htracer.tracers;
 
+import static htracer.utility.Constants.*;
 import htracer.utility.RGBColor;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
@@ -15,7 +16,7 @@ public class RayCast extends Tracer {
 	public RGBColor traceRay(Ray ray) {
 		ShadeRec sr = new ShadeRec(world);
 		
-		if (world.hit(ray, sr)) {
+		if (world.compound.hit(ray, sr, kHugeValue)) {
 			sr.ray.set(ray);
 			return sr.material.shade(sr);
 		} else {
@@ -27,7 +28,7 @@ public class RayCast extends Tracer {
 	public RGBColor traceRay(Ray ray, int depth) {
 		ShadeRec sr = new ShadeRec(world);
 		
-		if (world.hit(ray, sr)) {
+		if (world.compound.hit(ray, sr, kHugeValue)) {
 			sr.ray.set(ray);
 			return sr.material.shade(sr);
 		} else {

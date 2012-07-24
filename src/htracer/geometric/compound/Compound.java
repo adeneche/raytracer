@@ -1,20 +1,25 @@
 package htracer.geometric.compound;
 
-import java.util.List;
-import java.util.Vector;
-
 import htracer.geometric.BBox;
 import htracer.geometric.GeometricObject;
 import htracer.materials.Material;
+import htracer.materials.Matte;
+import htracer.math.Point3;
+import htracer.utility.Constants;
 import htracer.utility.Normal;
+import htracer.utility.RGBColor;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
-import static htracer.utility.Constants.kHugeValue;
+
+import java.util.List;
+import java.util.Vector;
 
 public class Compound extends GeometricObject {
 
 	protected List<GeometricObject> objects;
 	protected BBox bbox;
+	
+	Material debugMat = new Matte(0, 1, new RGBColor(0, 0, 1));
 	
 	public Compound() {
 		objects = new Vector<GeometricObject>();
@@ -58,35 +63,39 @@ public class Compound extends GeometricObject {
 	}
 	
 	@Override
-	public boolean hit(Ray ray, ShadeRec sr) {
+	public boolean hit(Ray ray, ShadeRec sr, float dist) {
+		if (sr == null) return shadowHit(ray, dist);
+		
+		Material material = null;
 		Normal normal = new Normal();
+		Point3 hitPoint = new Point3();
 		boolean	hit = false;
-		float tmin = kHugeValue;
+		float tmin = dist;
 		
 		for (GeometricObject obj : objects)
-			if (obj.hit(ray, sr) && (sr.t < tmin)) {
+			if (obj.hit(ray, sr, tmin)) {
 				hit	= true;
 				tmin = sr.t;
-				sr.material	= obj.getMaterial();
+				material = sr.material;
+				hitPoint.set(sr.hitPoint);
 				normal.set(sr.normal);
 			}
 		
 		if (hit) {
 			sr.t = tmin;
 			sr.normal.set(normal);
-			sr.hitPoint.set(ray.o.add(ray.d.mul(tmin)));
+			sr.material = material;
+			sr.hitPoint.set(hitPoint);
 		}
 		
 		return (hit);
 	}
-
+	
 	@Override
 	public boolean shadowHit(Ray ray, float dist) {
-
+		
 		for (GeometricObject obj : objects)
-			if (obj.shadowHit(ray, dist)) {
-				return true;
-			}
+			if (obj.shadowHit(ray, dist)) return true;
 		
 		return false;
 	}
