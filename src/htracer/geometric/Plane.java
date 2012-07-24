@@ -46,7 +46,7 @@ public class Plane extends GeometricObject {
 		if (t > kEpsilon) {
 			sr.t = t;
 			sr.normal = n;
-			sr.hitPoint = ray.o.add(ray.d.mul(t));
+//			sr.hitPoint = ray.o.add(ray.d.mul(t));
 
 			return true;
 		}
@@ -55,12 +55,12 @@ public class Plane extends GeometricObject {
 	}
 
 	@Override
-	public boolean shadowHit(Ray ray, ShadowOut so) {
+	public boolean shadowHit(Ray ray, ShadowOut so, float dist) {
 		if (!shadows) return false;
 		
 		float t = n.dot(a.sub(ray.o)) / n.dot(ray.d);
 
-		if (t > kEpsilon) {
+		if (t > kEpsilon && t < dist) {
 			so.t = t;
 			return true;
 		}

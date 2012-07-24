@@ -106,7 +106,7 @@ public class BBox extends GeometricObject {
 		if (t0 < t1 && t1 > Constants.kEpsilon) {
 			sr.t = t0;
 			
-			Point3 temp = new Point3(x1-x0, y1-y0, z1-z0); // centre du box
+			Point3 temp = new Point3((x1 + x0) / 2, (y1 + y0) / 2, (z1 + z0) / 2); // centre du box
 			sr.normal.set(ray.o.sub(temp));
 			if (t0 == tx_min) {
 				sr.normal.y = sr.normal.z = 0;
@@ -117,7 +117,7 @@ public class BBox extends GeometricObject {
 			}
 			sr.normal.normalize();
 			sr.material = getMaterial();
-			sr.hitPoint = ray.o.add(ray.d.mul(t0));
+
 			return true;
 		}
 		
@@ -125,7 +125,7 @@ public class BBox extends GeometricObject {
 	}
 	
 	@Override
-	public boolean shadowHit(Ray ray, ShadowOut so) {
+	public boolean shadowHit(Ray ray, ShadowOut so, float dist) {
 		if (!shadows) return false;
 		
 		float ox = ray.o.x; float oy = ray.o.y; float oz = ray.o.z;
@@ -185,7 +185,7 @@ public class BBox extends GeometricObject {
 		if (tz_max < t1)
 			t1 = tz_max;
 			
-		if (t0 < t1 && t1 > Constants.kEpsilon) {
+		if (t0 < t1 && t1 > Constants.kEpsilon && t0 < dist) {
 			so.t = t0;
 			return true;
 		}

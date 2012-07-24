@@ -72,7 +72,7 @@ public class Sphere extends GeometricObject {
 			if (t > kEpsilon) {
 				sr.t = t;
 				sr.normal.set((temp.add(ray.d.mul(t))).mul(1 / radius));
-				sr.hitPoint = ray.o.add(ray.d.mul(t));
+//				sr.hitPoint = ray.o.add(ray.d.mul(t));
 				sr.material = getMaterial();
 				return true;
 			}
@@ -82,7 +82,7 @@ public class Sphere extends GeometricObject {
 	}
 
 	@Override
-	public boolean shadowHit(Ray ray, ShadowOut so) {
+	public boolean shadowHit(Ray ray, ShadowOut so, float dist) {
 		if (!shadows) return false;
 		
 		float t;
@@ -103,7 +103,7 @@ public class Sphere extends GeometricObject {
 				t = (-b + e) / denom; // larger root
 			}
 
-			if (t > kEpsilon) {
+			if (t > kEpsilon && t < dist) {
 				so.t = t;
 				return true;
 			}

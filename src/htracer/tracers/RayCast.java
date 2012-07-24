@@ -13,9 +13,9 @@ public class RayCast extends Tracer {
 	
 	@Override
 	public RGBColor traceRay(Ray ray) {
-		ShadeRec sr = world.hitObjects(ray);
+		ShadeRec sr = new ShadeRec(world);
 		
-		if (sr.hitAnObject) {
+		if (world.hit(ray, sr)) {
 			sr.ray.set(ray);
 			return sr.material.shade(sr);
 		} else {
@@ -25,9 +25,9 @@ public class RayCast extends Tracer {
 
 	@Override
 	public RGBColor traceRay(Ray ray, int depth) {
-		ShadeRec sr = new ShadeRec(world.hitObjects(ray));
+		ShadeRec sr = new ShadeRec(world);
 		
-		if (sr.hitAnObject) {
+		if (world.hit(ray, sr)) {
 			sr.ray.set(ray);
 			return sr.material.shade(sr);
 		} else {

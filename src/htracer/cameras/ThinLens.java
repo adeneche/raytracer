@@ -32,7 +32,7 @@ public class ThinLens extends Camera {
 		vp.s /= zoom;
 
 		System.out.print("Rendering: [");
-		long start = System.currentTimeMillis();
+
 		int total = vp.hres * vp.vres * vp.numSamples; // total number of ray shots
 		int current = 0; // current number of ray shots
 
@@ -65,9 +65,6 @@ public class ThinLens extends Camera {
 					current -= total / 10;
 				}
 			}
-
-		System.out.println("]. Done in " + (System.currentTimeMillis() - start)
-				/ 1000 + "s");
 
 	}
 

@@ -15,16 +15,17 @@ import htracer.world.World;
 
 import java.io.IOException;
 
-public class Ch14World extends World {
-
+public class Ch22World extends World {
+	static boolean draft = false;
+	static boolean occlusion = true;
+	static long duration;
+	
 	@Override
 	public void build() {
-		boolean draft = false;
-		boolean occlusion = true;
 		
-		vp.hres = 800;
-		vp.vres = 600;
-		vp.s = 0.5f;
+		vp.hres = draft ? 400:800;
+		vp.vres = draft ? 300:600;
+		vp.s = draft ? 1:0.5f;
 		vp.setSamples(draft ? 1:64);
 		
 		backgroundColor.set(white.mul(.75f));
@@ -38,7 +39,7 @@ public class Ch14World extends World {
 		thinLens.d = 40;
 		thinLens.f = 125;
 		thinLens.lensRadius = draft ? 0:2;
-		thinLens.zoom = 6f;
+		thinLens.zoom = 6;
 		thinLens.computeUVW();
 		
 		camera = thinLens;
@@ -65,13 +66,25 @@ public class Ch14World extends World {
 		//TODO générer chaque box aléatoirement dans son carré (multi-jittering)
 		for (int r = 0; r < num; r++) {
 			for (int c = 0; c < num; c++) {
-				float height = (float) (Math.random()*20 + 50);
+				float height = 50; //(float) (Math.random()*20 + 50);
 				float x = r*(bwidth+pad) - 100;
 				float z = c*(bwidth+pad) - 100;
 				objects.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, gray));
 			}
 		}
 	}
+
+	
+	@Override
+	public void renderScene() {
+		long start = System.currentTimeMillis();
+
+		super.renderScene();
+
+		duration = (System.currentTimeMillis() - start) / 1000;
+		System.out.println("]. Done in " + duration + "s");
+	}
+
 
 	private BBox newBBox(float x0, float x1, float y0, float y1, float z0, float z1,
 			RGBColor color) {
@@ -81,12 +94,12 @@ public class Ch14World extends World {
 	}
 	
 	public static void main(String[] args) {
-		World world = new Ch14World();
+		World world = new Ch22World();
 		world.build();
 		world.renderScene();
 		
 		try {
-			world.saveImage("chapter17o.png");
+			world.saveImage("chapter22.fixed2." + (draft ? "d": (occlusion ? "o":"")) + "(" + duration + "s).png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,5 @@
 package htracer.lights;
 
-import htracer.geometric.GeometricObject;
 import htracer.geometric.GeometricObject.ShadowOut;
 import htracer.math.Point3;
 import htracer.math.Vector3;
@@ -35,10 +34,10 @@ public class PointLight extends Light {
 		float d = location.len(ray.o);
 		ShadowOut so = new ShadowOut();
 		
-		for (GeometricObject go : sr.w.objects) {
-			if (go.shadowHit(ray, so) && so.t < d)
-				return true;
+		if (sr.w.shadowHit(ray, so, d)) {
+			return true;
 		}
+
 		return false;
 	}
 

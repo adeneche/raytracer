@@ -32,7 +32,7 @@ public class Pinhole extends Camera {
 		ray.o.set(eye);
 
 		System.out.print("Rendering: [");
-		long start = System.currentTimeMillis();
+
 		int total = vp.hres * vp.vres * vp.numSamples; // total number of ray
 														// shots
 		int current = 0; // current number of ray shots
@@ -60,8 +60,6 @@ public class Pinhole extends Camera {
 					current -= total / 10;
 				}
 			}
-
-		System.out.println("]. Done in " + (System.currentTimeMillis() - start) / 1000 + "s");
 	}
 
 	public Vector3 getDirection(Point2 p) {

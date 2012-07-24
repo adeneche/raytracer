@@ -1,11 +1,11 @@
 package htracer.lights;
 
-import htracer.geometric.GeometricObject;
 import htracer.geometric.GeometricObject.ShadowOut;
 import htracer.math.Point3;
 import htracer.math.Vector3;
 import htracer.samplers.MultiJittered;
 import htracer.samplers.Sampler;
+import htracer.utility.Constants;
 import htracer.utility.RGBColor;
 import htracer.utility.Ray;
 import htracer.utility.ShadeRec;
@@ -54,9 +54,7 @@ public class AmbiantOccluder extends Ambient {
 	public boolean inShadow(Ray ray, ShadeRec sr) {
 		ShadowOut so = new ShadowOut();
 		
-		for (GeometricObject go : sr.w.objects) {
-			if (go.shadowHit(ray, so)) return true;
-		}
+		if (sr.w.shadowHit(ray, so, Constants.kHugeValue)) return true;
 		
 		return false;
 	}

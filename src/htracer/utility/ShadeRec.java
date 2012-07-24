@@ -13,9 +13,8 @@ public class ShadeRec {
 
 	public float t; // ray parameter
 
-	public boolean hitAnObject; // did the ray hit an object ?
 	public Point3 hitPoint; // world coordinates of hit point
-	public Point3 localHitPoint; // for attaching textures to objects
+
 	public Normal normal; // normal at hit point
 	public World w; // world reference for shading
 	
@@ -26,7 +25,6 @@ public class ShadeRec {
 	
 	public ShadeRec(World wr) {
 		hitPoint= new Point3();
-		localHitPoint = new Point3();
 		normal = new Normal(0, 0, 1);
 		w = wr;
 		
@@ -40,9 +38,7 @@ public class ShadeRec {
 	}
 	
 	public void set(ShadeRec sr) {
-		hitAnObject = sr.hitAnObject;
 		hitPoint.set(sr.hitPoint);
-		localHitPoint.set(sr.localHitPoint);
 		normal.set(sr.normal);
 		ray.set(sr.ray);
 		depth = sr.depth;
