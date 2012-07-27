@@ -29,10 +29,14 @@ public abstract class Camera {
 	
 	public abstract void renderScene(World world);
 
+	public void computeUVW() {
+		computeUVW(eye, lookat, up, u, v, w);
+	}
+	
 	/**
 	 * This computes an orthornormal basis given the view point, lookat point, and up vector
 	 */
-	public void computeUVW() {
+	public static void computeUVW(Point3 eye, Point3 lookat, Point3 up, Vector3 u, Vector3 v, Vector3 w) {
 		//w = eye - lookat;
 		//w.normalize();
 		w.set(eye.sub(lookat));

@@ -11,9 +11,11 @@ import htracer.lights.AmbiantOccluder;
 import htracer.lights.Light;
 import htracer.lights.PointLight;
 import htracer.materials.Matte;
+import htracer.materials.Reflective;
 import htracer.math.Point3;
 import htracer.samplers.MultiJittered;
 import htracer.tracers.RayCast;
+import htracer.tracers.Whitted;
 import htracer.utility.RGBColor;
 import htracer.world.World;
 
@@ -23,7 +25,7 @@ public class Ch22World extends World {
 	static boolean draft = false;
 	static boolean occlusion = true;
 	static long duration;
-	static boolean useFrame = false;
+	static boolean useFrame = true;
 	
 	@Override
 	public void build() {
@@ -32,36 +34,29 @@ public class Ch22World extends World {
 		vp.vres = draft ? 300:600;
 		vp.s = draft ? 1:0.5f;
 		vp.setSamples(draft ? 1:64);
+		vp.maxDepth = 10;
 		
 		backgroundColor.set(white.mul(.75f));
 		
-		tracer = new RayCast(this);  
+		tracer = new Whitted(this);  
 		
 		ThinLens thinLens = new SpThinLens();
 		thinLens.setSampler(new MultiJittered(vp.numSamples));
 		thinLens.eye.set(75, -125, 150);
 		thinLens.lookat.set(0, 0, 0);
 		thinLens.d = 40;
-		thinLens.f = 125;
+		thinLens.f = 160;
 		thinLens.lensRadius = draft ? 0:2;
 		thinLens.zoom = 6;
 		camera = thinLens;
 		
-//		Pinhole pinhole = new SpPinhole();
-//		pinhole.eye.set(75, -125, 150);
-//		pinhole.lookat.set(0, 0, 0);
-//		pinhole.d = 40;
-//		pinhole.zoom = 6;
-//		camera = pinhole;
-		
-		
 		// LIGHTS
 		Light.globalShadows = !draft;
-		lights.add(new PointLight(new Point3(0, -125, 150), 4f, white));
+		lights.add(new PointLight(new Point3(0, -125, 150), 4f, white, draft ? 0:1));
 		
 		if (!draft && occlusion) {
 			AmbiantOccluder ao = new AmbiantOccluder();
-			ao.setSamples(25);
+			ao.setSamples(64);
 			ambient = ao;
 		}
 		
@@ -73,17 +68,27 @@ public class Ch22World extends World {
 		int bwidth = 10;
 		int num = 10;
 		float pad = (200 - num*bwidth) / (num - 1);
-		
-		//TODO générer chaque box aléatoirement dans son carré (multi-jittering)
+
+		// dessiner la bordure
 		for (int r = 0; r < num; r++) {
 			for (int c = 0; c < num; c++) {
-				float height = (float) (Math.random()*20 + 50);
 				float x = r*(bwidth+pad) - 100;
 				float z = c*(bwidth+pad) - 100;
-				compound.add(newBBox(x, x + bwidth, -height, 0, z, z + bwidth, gray));
+				int height = 0;
+				
+				if (r == 0 || c == 0 || r == (num-1) || c == (num - 1)) {
+					height = 3;
+					for (int j = 0; j < height; j++) {
+						compound.add(newMirrorBox(x, x + bwidth, -j*(bwidth+5)-bwidth, -j*(bwidth+5), z, z + bwidth));
+					}
+				} 
 			}
 		}
 		
+		compound.add(newMirrorBox(4*(bwidth+pad) - 100, 6*(bwidth+pad) - 100 - pad, 
+							-6*(bwidth+5), 0, 
+							4*(bwidth+pad) - 100, 6*(bwidth+pad) - 100 - pad));
+
 		System.out.println("Seting up cells...");
 		((Grid)compound).setupCells();
 	}
@@ -104,6 +109,12 @@ public class Ch22World extends World {
 			RGBColor color) {
 		BBox bbox = new BBox(x0, x1, y0, y1, z0, z1);
 		bbox.setMaterial(new Matte(.5f, 0.5f, color));
+		return bbox;
+	}
+
+	private BBox newMirrorBox(float x0, float x1, float y0, float y1, float z0, float z1) {
+		BBox bbox = new BBox(x0, x1, y0, y1, z0, z1);
+		bbox.setMaterial(new Reflective(.75f));
 		return bbox;
 	}
 	

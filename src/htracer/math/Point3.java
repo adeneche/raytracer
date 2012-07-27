@@ -3,6 +3,8 @@ package htracer.math;
 
 public class Point3 {
 
+	public static final Point3 ONE = new Point3(1);
+	
 	public float x;
 	public float y;
 	public float z;
